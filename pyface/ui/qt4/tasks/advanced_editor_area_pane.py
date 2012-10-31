@@ -392,6 +392,9 @@ class EditorAreaWidget(QtGui.QSplitter):
     def set_layout(self, layout):
         """ Applies the given LayoutItem to current splitter.
         """
+        # clear-out any pre-existing layout if present, by flattening it
+        self.flatten()
+
         ORIENTATION_MAP = {'horizontal': QtCore.Qt.Horizontal, 
                            'vertical': QtCore.Qt.Vertical}
         # if not a leaf splitter
@@ -593,7 +596,22 @@ class EditorAreaWidget(QtGui.QSplitter):
         parent.rightchild = None
         self.setParent(None)
         sibling.setParent(None)
-    
+
+    def flatten(self):
+        """ Grabs all the tabs contained by the current splitter or any of its 
+        descendents to put them in a flat single tabwidget.
+        """
+        # it's already flat if it's a leaf
+        if self.is_leaf():
+            return
+
+        # flatten the children
+        self.leftchild.flatten()
+        self.rightchild.flatten()
+
+        # collapse the children into their parent once they are flattened
+        self.leftchild.collapse()
+
 
 class DraggableTabWidget(QtGui.QTabWidget):
     """ Implements a QTabWidget with event filters for tab drag and drop
