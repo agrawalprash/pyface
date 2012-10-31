@@ -299,6 +299,14 @@ class AdvancedEditorAreaPane(TaskPane, MEditorAreaPane):
         index = self.active_tabwidget.indexOf(editor.control)
         self.active_tabwidget.setTabToolTip(index, self._get_label(editor))
 
+    @on_trait_change('active_tabwidget')
+    def _update_active_editor(self):
+        if self.active_tabwidget.parent().is_empty():
+            self.active_editor = None
+        else:
+            editor_widget = self.active_tabwidget.currentWidget()
+            self.active_editor = self._get_editor(editor_widget)
+
     #### Signal handlers ######################################################
 
     def _focus_changed(self, old, new):
