@@ -120,10 +120,10 @@ class AdvancedEditorAreaPane(TaskPane, MEditorAreaPane):
         """
         editor.editor_area = self
         editor.create(self.active_tabwidget)
+        self.editors.append(editor)
         index = self.active_tabwidget.addTab(editor.control, 
                                             self._get_label(editor))
         self.active_tabwidget.setTabToolTip(index, editor.tooltip)
-        self.editors.append(editor)
 
     def remove_editor(self, editor):
         """ Removes an editor from the associated tabwidget
