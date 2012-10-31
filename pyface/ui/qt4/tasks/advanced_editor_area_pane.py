@@ -321,8 +321,8 @@ class AdvancedEditorAreaPane(TaskPane, MEditorAreaPane):
                 # check if any of the editor widgets (or their focus proxies) 
                 # have focus. If yes, make it active
                 for editor in self.editors:
-                    # hasFocus is True if control or it's focusproxy has focus
-                    if editor.control.hasFocus():
+                    # this is True if control or any of its descendents have focus
+                    if editor.control.isAncestorOf(new):
                         self.activate_editor(editor)
                         break
 
